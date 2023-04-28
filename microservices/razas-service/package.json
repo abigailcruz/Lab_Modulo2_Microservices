@@ -1,0 +1,15 @@
+{
+  "name": "razas-service",
+  "version": "1.0.0",
+  "description": "razas-service",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Jhojaira",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "papaparse": "^5.4.1"
+  }
+}

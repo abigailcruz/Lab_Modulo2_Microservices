@@ -1,0 +1,20 @@
+{
+  "name": "premios-service",
+  "version": "1.0.0",
+  "description": "premios-service",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Jhojaira",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "sequelize": "^6.31.0",
+    "sqlite3": "^5.1.6"
+  },
+  "keywords": [],
+  "devDependencies": {
+    "electron-rebuild": "^3.2.9"
+  }
+}
