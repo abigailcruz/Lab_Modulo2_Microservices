@@ -1,6 +1,9 @@
 // Importamos el paquete express
 const express = require("express");
 
+const axios = require("axios");
+
+
 //sqlite3
 const db = require("../../config/database.js");
 
@@ -42,39 +45,6 @@ db.all(consulta, [], (err, filas) => {
 });
 
 
-  //TODO: Obtener estrellas de acuerdo a un numero ingresado de 10 a 50 / SI DICE ENTRE 20 40 60 80 O 100 DIVIDIRIA ENTRE 20
-  
- 
-router.get("/:puntaje", (req, res) => {
-  const puntaje = req.params.puntaje;
-  const asteriscos = "*".repeat(Math.floor(parseInt(puntaje)/10)); // obtenemos la cantidad de asteriscos según el puntaje
-  const consulta = `SELECT * FROM campeonatos WHERE puntaje = '${asteriscos}'`;
-  
-  db.all(consulta, [], (err, filas) => {
-    if (err) {
-      throw err;
-    }
-    const campeonatos = filas.map(fila => ({
-      id: fila.id,
-      id_campeon: fila.id_campeon,
-      /*anio_campeonato: fila.anio_campeonato,
-      lugar: fila.lugar,
-      categoria_ganada: fila.categoria_ganada,
-      pais_competencia: fila.pais_competencia,
-      premio: fila.premio,
-      puntaje: fila.puntaje */
-    }));
-  
-    const response = {
-      service: "premios",
-      architecture: "microservices",
-      //length: campeonatos.length,
-      data: campeonatos
-    };
-    
-    return res.send(response);
-  });
-});
 
 
 // TODO: Ejercicio 1
@@ -110,16 +80,22 @@ router.get("/campeonatos/:categoria/:paiscompetencia", (req, res) => {
   });
   }
   catch(err){
-    return res.status(500).send({ error });
+    return res.status(500).send({ err });
   }
 });
 
 
-// TODO: EJERCICIO 3
-router.get("/campeon/:id", (req, res) => {
-  const id = req.params.id;
-  const campeon = req.params.campeon;
-  const consulta = `SELECT * FROM campeonatos WHERE categoria_ganada = '${categoria}' AND pais_competencia = '${paiscompetencia}'`;
+// TODO: EJERCICIO 3 
+
+
+
+//TODO: EJERCICIO 4 
+ 
+router.get("/:puntaje/:pais", (req, res) => {
+  const puntaje = req.params.puntaje;
+  const paiscompetencia = req.params.paiscompetencia;
+  const asteriscos = "*".repeat(Math.floor(parseInt(puntaje)/10)); // obtenemos la cantidad de asteriscos según el puntaje
+  const consulta = `SELECT * FROM campeonatos WHERE puntaje = '${asteriscos}' AND pais_competencia = '${paiscompetencia}'`;
   
   db.all(consulta, [], (err, filas) => {
     if (err) {
@@ -127,16 +103,10 @@ router.get("/campeon/:id", (req, res) => {
     }
     const campeonatos = filas.map(fila => ({
       id: fila.id,
-      id_campeon: fila.id_campeon,
-      anio_campeonato: fila.anio_campeonato,
-      lugar: fila.lugar,
-      categoria_ganada: fila.categoria_ganada,
+      raza: fila.raza,
       pais_competencia: fila.pais_competencia,
-      premio: fila.premio,
-      puntaje: fila.puntaje 
     }));
-
-
+  
     const response = {
       service: "premios",
       architecture: "microservices",
@@ -149,4 +119,8 @@ router.get("/campeon/:id", (req, res) => {
 });
 
 
+
+
+
 module.exports = router;
+
