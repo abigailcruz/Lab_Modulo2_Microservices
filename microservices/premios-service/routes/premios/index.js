@@ -78,7 +78,7 @@ db.all(consulta, [], (err, filas) => {
   
 
   // TODO: Campeonatos por categoria ganada 
-  router.get("/campeonatos/:categoria/:pais", (req, res) => {
+  router.get("/campeonatos/:categoria/:paiscompetencia", (req, res) => {
     const categoria = req.params.categoria_ganada;
     const paiscompetencia = req.params.pais_competencia;
     //const asteriscos = "*".repeat(Math.floor(parseInt(puntaje)/10)); // obtenemos la cantidad de asteriscos según el puntaje
@@ -92,14 +92,14 @@ db.all(consulta, [], (err, filas) => {
       const campeonatos = filas.map(fila => ({
         id: fila.id,
         id_campeon: fila.id_campeon,
-       anio_campeonato: fila.anio_campeonato,
+        anio_campeonato: fila.anio_campeonato,
         lugar: fila.lugar,
         categoria_ganada: fila.categoria_ganada,
         pais_competencia: fila.pais_competencia,
         premio: fila.premio,
         puntaje: fila.puntaje 
       }));
-    
+      console.log (campeonatos)
       const response = {
         service: "premios",
         architecture: "microservices",
@@ -111,61 +111,6 @@ db.all(consulta, [], (err, filas) => {
     });
   });
   
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  router.get("/campeonatos/:catganada/:paiscomp", (req, res) => {
-
-  const categanada = req.params.categoria_ganada;
-  const paiscompetencia = req.params.pais_competencia;
-  campeonatos = `SELECT * FROM campeonatos WHERE categoria_ganada = '${categanada}'  AND WHERE pais_competencia = '${paiscompetencia}'`
-  //competencia = `SELECT * FROM campeonatos WHERE pais_competencia = '${paiscompetencia}'`
-  
-  db.all(campeonatos, [], (err, filas) => {
-    if (err) {
-      throw err;
-    }
-    // crea una lista de diccionarios con la información de los campeonatos
-    const campeonatos = filas.map(fila => ({
-      id: fila.id,
-      id_campeon: fila.id_campeon,
-      anio_campeonato: fila.anio_campeonato,
-      lugar: fila.lugar,
-      categoria_ganada: fila.categoria_ganada,
-      pais_competencia: fila.pais_competencia,
-      premio: fila.premio,
-      puntaje: fila.puntaje
-    }));
-
-  });
-
-  const response = {
-    service: "premios",
-    architecture: "microservices",
-    length: campeonatos.length,
-    data: campeonatos
-  };
-
-  return res.send(response); // devuelve la respuesta al cliente
-}); 
-
 
 //TODO
 module.exports = router;
