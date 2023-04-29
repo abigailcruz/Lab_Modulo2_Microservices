@@ -17,7 +17,7 @@ const csvToJson = Papa.parse(fileContent, {
 });
 
 
-// Creamos la ruta para obtener todos los lenguajes
+// Creamos la ruta para obtener las razas
 router.get("/", (req, res) => {
     // Creamos un objeto de respuesta con los datos de los lenguajes
     const response = {
@@ -31,6 +31,24 @@ router.get("/", (req, res) => {
   });
   
 
+  // busqueda por nombre o id de raza
+  router.get("/razas/:busqueda", (req, res) => {
+    const busqueda = req.params.busqueda;
+    const razasSearch = csvToJson.data.filter(raza => 
+      (raza.raza && raza.raza.toLowerCase().includes(busqueda.toLowerCase())) || 
+      (raza.id && raza.id.toString() === busqueda)
+    );
+  
+    const response = {
+      service: "razas",
+      architecture: "microservices",
+      data: razasSearch,
+    };
+  
+    return res.send(response);
+  });
+  
+  
 
 
 module.exports = router;

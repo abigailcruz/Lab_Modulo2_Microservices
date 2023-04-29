@@ -19,4 +19,24 @@ router.get("/", (req, res) => {
     return res.send(response); // devuelve la respuesta al cliente
   }); 
 
+
+
+  //Perros por nombre o id
+  router.get("/perros/:busqueda", (req, res) => {
+    const busqueda = req.params.busqueda;
+    const perrosFiltrados = data.filter(perro => perro.nombre_perro.toLowerCase().includes(busqueda.toLowerCase()) || perro.Id.toString() === busqueda);
+  
+    const response = {
+      service: "perros",
+      architecture: "microservices",
+      length: perrosFiltrados.length,
+      data: perrosFiltrados,
+    };
+  
+    return res.send(response);
+  });
+  
+
+  //
+
 module.exports = router;
