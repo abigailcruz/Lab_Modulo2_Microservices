@@ -48,6 +48,11 @@ router.get("/", (req, res) => {
     return res.send(response);
   });
   
+
+  //TODO: EJERCICIO 2
+  
+  
+
   
 
 
