@@ -68,6 +68,41 @@ db.all(consulta, [], (err, filas) => {
       const response = {
         service: "premios",
         architecture: "microservices",
+        //length: campeonatos.length,
+        data: campeonatos
+      };
+      
+      return res.send(response);
+    });
+  });
+  
+
+  // TODO: Campeonatos por categoria ganada 
+  router.get("/campeonatos/:categoria/:pais", (req, res) => {
+    const categoria = req.params.categoria_ganada;
+    const paiscompetencia = req.params.pais_competencia;
+    //const asteriscos = "*".repeat(Math.floor(parseInt(puntaje)/10)); // obtenemos la cantidad de asteriscos según el puntaje
+    const consulta = `SELECT * FROM campeonatos WHERE categoria_ganada = '${categoria}' AND pais_competencia = '${paiscompetencia}'  `;
+    //const pais = `SELECT * FROM campeonatos WHERE categoria_ganada = '${paiscompetencia}'`;
+    
+    db.all(consulta, [], (err, filas) => {
+      if (err) {
+        throw err;
+      }
+      const campeonatos = filas.map(fila => ({
+        id: fila.id,
+        id_campeon: fila.id_campeon,
+       anio_campeonato: fila.anio_campeonato,
+        lugar: fila.lugar,
+        categoria_ganada: fila.categoria_ganada,
+        pais_competencia: fila.pais_competencia,
+        premio: fila.premio,
+        puntaje: fila.puntaje 
+      }));
+    
+      const response = {
+        service: "premios",
+        architecture: "microservices",
         length: campeonatos.length,
         data: campeonatos
       };
@@ -76,7 +111,25 @@ db.all(consulta, [], (err, filas) => {
     });
   });
   
-  // TODO: Campeonatos por categoria ganada 
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
   router.get("/campeonatos/:catganada/:paiscomp", (req, res) => {
 
@@ -112,4 +165,7 @@ db.all(consulta, [], (err, filas) => {
 
   return res.send(response); // devuelve la respuesta al cliente
 }); 
+
+
+//TODO
 module.exports = router;
