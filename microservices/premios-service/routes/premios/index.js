@@ -1,8 +1,6 @@
 // Importamos el paquete express
 const express = require("express");
 
-const axios = require("axios");
-
 
 //sqlite3
 const db = require("../../config/database.js");
@@ -88,15 +86,39 @@ router.get("/campeonatos/:categoria/:paiscompetencia", (req, res) => {
 // TODO: EJERCICIO 3 
 
 
-
 //TODO: EJERCICIO 4 
  
-router.get("/:puntaje/:pais", (req, res) => {
+ router.get("/:puntaje/:pais", async (req, res) => {
   const puntaje = req.params.puntaje;
   const paiscompetencia = req.params.paiscompetencia;
   const asteriscos = "*".repeat(Math.floor(parseInt(puntaje)/10)); // obtenemos la cantidad de asteriscos según el puntaje
   const consulta = `SELECT * FROM campeonatos WHERE puntaje = '${asteriscos}' AND pais_competencia = '${paiscompetencia}'`;
   
+  try {
+    const perroCampeon= req.params.author;
+    let perro = [];
+
+    // Verificamos si el parámetro es un ID de autor o un nombre de autor
+    if (isNaN(perroCampeon)) {
+      // Si es un nombre de autor, buscamos el autor por nombre
+      const response = await axios.get(`http://nginx:8080/api/v2/perros/author/${perroCampeon}`);
+      const perros = response.data.data;
+      cosole.log(perros)
+      // Obtenemos los libros donde el autor coincide con alguno de los autores encontrados
+      perros = data.perros.filter((perro) => {
+        return perro.some((perro) => perro.id == perro.id);
+      });
+    } else {
+      // Si es un ID de autor, buscamos los libros directamente
+      perros = data.perros.filter((perro) => {
+        return perro.id == perroCampeon;
+      });
+    }
+  }catch (error) {
+  console.error(error);
+  return res.status(500).send({ message: "No se han podido obtener los perros" });
+}
+
   db.all(consulta, [], (err, filas) => {
     if (err) {
       throw err;
@@ -105,6 +127,7 @@ router.get("/:puntaje/:pais", (req, res) => {
       id: fila.id,
       raza: fila.raza,
       pais_competencia: fila.pais_competencia,
+      id_campeon: perros
     }));
   
     const response = {
@@ -113,13 +136,12 @@ router.get("/:puntaje/:pais", (req, res) => {
       length: campeonatos.length,
       data: campeonatos
     };
-    
     return res.send(response);
   });
 });
 
 
-
+ 
 
 
 module.exports = router;

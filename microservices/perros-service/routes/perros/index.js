@@ -40,7 +40,7 @@ router.get("/", (req, res) => {
   //perros segun raza
   router.get("/perro/:raza", (req, res) => {
     // busca los libros que contengan el título buscado
-    const razas = data.datos_perros.perros.filter((raza) => {
+    const razas = data.filter((raza) => {
       return raza.raza.includes(req.params.raza);
     });
     // crea una respuesta con información sobre los libros que coinciden con el título buscado
